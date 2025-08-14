@@ -1,4 +1,4 @@
-# 수열 - s3
+# baekjoon_2559 - 수열 - S3
 
 N, K = map(int, input().split())
 temp = list(map(int, input().split()))

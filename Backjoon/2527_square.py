@@ -1,6 +1,4 @@
-# baekjoon
-# 직사각형
-# S1
+# baekjoon_2578 - 직사각형 - S1
 
 lst = []
 for _ in range(4):

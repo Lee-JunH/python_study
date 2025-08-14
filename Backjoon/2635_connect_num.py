@@ -1,4 +1,4 @@
-# 수 이어가기
+# baekjoon_2635 - 수 이어가기 - S5
 
 num = int(input())
 count_max = 0

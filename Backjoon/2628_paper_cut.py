@@ -1,4 +1,4 @@
-# 종이자르기 - s5
+# baekjoon_2628 - 종이자르기 - S5
 
 garo, sero = map(int, input().split())
 num = int(input())

@@ -1,4 +1,4 @@
-# 주사위 쌓기 - g5
+# baekjoon_2116 - 주사위 쌓기 - G5
 
 num = int(input())
 dice = [list(map(int, input().split())) for _ in range(num)]

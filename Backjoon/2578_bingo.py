@@ -1,4 +1,4 @@
-# 빙고 - s4
+# baekjoon_2578 - 빙고 - S4
 
 board = [list(map(int, input().split())) for _ in range(5)]
 

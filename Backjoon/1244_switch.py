@@ -1,4 +1,4 @@
-# 스위치 켜고 끄기
+# baekjoon_1244 - 스위치 켜고 끄기 - S4
 
 test_case = int(input())
 
