@@ -1,4 +1,5 @@
 # baekjoon_2559 - 수열 - S3
+# 전에 푼 문제처럼 처음값 지우고 다음값 더하기
 
 N, K = map(int, input().split())
 temp = list(map(int, input().split()))

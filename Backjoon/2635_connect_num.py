@@ -12,16 +12,16 @@ for i in range(num, -1, -1):
         temp1 = temp2
         temp2 = temp
         count += 1
-    count_max = max(count_max, count)
-    if count_max == count: result = i
+    if count_max <= count:
+        count_max = count
+        result = i
 
+lst = [num, result]
+i = 0
+while True:
+    if lst[i] - lst[i+1] < 0:
+        break
+    lst.append(lst[i]-lst[i+1])
+    i += 1
 print(count_max)
-temp1 = num
-temp2 = result
-print(num, end = ' ')
-print(result, end = ' ')
-while temp1 - temp2 >= 0:
-    temp = temp1 - temp2
-    temp1 = temp2
-    temp2 = temp
-    print(temp, end = ' ')
+print(' '.join(str(n) for n in lst))
