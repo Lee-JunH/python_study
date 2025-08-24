@@ -9,41 +9,49 @@ backjoon_1991 - 트리 순회 - S1
 - 그리고 순회 방식에 따른 결과를 출력한다.
 """
 
-class tree_traversal():
-    def __init__(self):
-        pass
+# 이진 트리 클래스 생성
+class Binary_tree:
+    def __init__(self, len):
+        self.tree = {}
     
-    def preorder(self, tree):
-        pass
-    
-    def inorder(self):
-        pass
-    
-    def postorder(self):
-        pass
+    def new_node(self, parent, left, right):
+        self.tree.setdefault(parent, (left, right))
 
-def inorder(t):
+    def preorder(self, root):
+        if root not in self.tree and root == '.':
+            return
+        print(root, end='')
+        left, right = self.tree[root]
+        self.preorder(left)
+        self.preorder(right)
     
-
+    def inorder(self, root):
+        if root not in self.tree and root == '.':
+            return
+        left, right = self.tree[root]
+        self.inorder(left)
+        print(root, end='')
+        self.inorder(right)
+    
+    def postorder(self, root):
+        if root not in self.tree and root == '.':
+            return
+        left, right = self.tree[root]
+        self.postorder(left)
+        self.postorder(right)  
+        print(root, end='')
 
 N = int(input())
 
-node = [0 for _ in range(N+1)]
-# 노드를 딕셔너리에 저장
-tree = {}
+# 클래스 변수 선언
+my_tree = Binary_tree(N)
 for _ in range(N):
     parent, left, right = input().split()
-    tree.setdefault(parent, [])
-    if left != '.' and right != '.':
-        tree[parent].extend([left, right])
-    elif left != '.':
-        tree[parent].append(left)
-    elif right != '.':
-        tree[parent].append(right)
+    my_tree.new_node(parent, left, right)
 
-bin_tree = tree_traversal()
-
-bin_tree.preorder(tree)
-bin_tree.inorder(tree)
-bin_tree.postorder(tree)
-
+my_tree.preorder('A')
+print()
+my_tree.inorder('A')
+print()
+my_tree.postorder('A')
+print()
