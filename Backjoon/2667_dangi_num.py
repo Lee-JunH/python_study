@@ -14,21 +14,19 @@ backjoon_2667 - 단지번호붙이기 - S1
 - dfs를 실행하면서 최종 리스트에 개수를 입력하고 정렬 후 출력
 """
 
-def dfs_home(stack):
-    while stack:
-        temp = stack.pop()
-        vis[temp[0]][temp[1]] = True
-        for dir in range(4):
-            nr = temp[0] + dr[dir]
-            nc = temp[1] + dc[dir]
-            if nr < 0 or nr >= N or nc < 0 or nc >= N:
-                continue
-            if vis[nr][nc] or not home[nr][nc]:
-                continue
-            vis[nr][nc] = True
-            stack.append((nr, nc))
-            dfs_home(stack)
-    return cnt
+def dfs_home(r, c):
+    global cnt
+
+    if r < 0 or r >= N or c < 0 or c >= N:
+        return
+    if vis[r][c] or home[r][c] == 0:
+        return
+    vis[r][c] = 1
+    cnt += 1
+    for dir in range(4):
+        nr = r + dr[dir]
+        nc = c + dc[dir]
+        dfs_home(nr, nc)
 
 N = int(input())
 home = [list(map(int, input().strip())) for _ in range(N)]
@@ -38,14 +36,16 @@ res_home = []   # 단지 별 집 수 저장
 dr = [0, 1, 0, -1]
 dc = [1, 0, -1, 0]
 
-my_stack = []
+# 모든 점에 대해서 dfs 하여 개수 세기
 for row in range(N):
     for col in range(N):
-        if home[row][col] == 1 and not vis[row][col]:
-            my_stack.append((row, col))
-            cnt = dfs_home(my_stack)
+        if home[row][col] == 1 and not vis[row][col]:   # 집이고 방문 안한
+            cnt = 0
+            dfs_home(row, col)
             res_home.append(cnt)
-dfs_home(res_home)
-res_home.sort()
-print(len(res_home))
-print("\n".join(res_home))
+
+dangi = len(res_home)
+res_home.sort() # 정렬하여 출력
+print(dangi)
+for i in range(dangi):
+    print(res_home[i])
