@@ -20,13 +20,21 @@ backjoon_12865 - 평범한 배낭 - G5
 N, K = map(int, input().split())    # 물품의 수 N, 무게 최대 K
 baggage = [tuple(map(int, input().split())) for _ in range(N)]  # 무게 W, 가치 V
 
+dp = [0] * (K + 1)
 
-print(max_sum)
+for w, v in baggage:
+    # 뒤에서 앞으로 업데이트 (앞에서 하면 같은 물건을 여러 번 넣어버리는 문제 생김)
+    for weight in range(K, w - 1, -1):
+        temp1 = dp[weight]      # 이전에 저장된 dp값
+        temp2 = dp[weight - w]  # 입력된 무게를 제외한 dp 값
+        dp[weight] = max(temp1, temp2 + v)  # 이전 값과 입력된 무게를 제외한 값에 현재를 더한 값 중 최대 값
+
+print(dp[K])
 
 
 # 1. 비트마스트 -> 시간 초과
 # max_sum = 0
-# for i in range(1<<N):   # 모든 부분 집합
+# for i in range(1<<N):   # 모든 부분 집합z
 #     bag = []
 #     for j in range(N):
 #         if i & (1<<j):
@@ -40,6 +48,7 @@ print(max_sum)
 #         if max_sum < sum_v: # 가치합이 max값인지 확인
 #             max_sum = sum_v
 # print(max_sum)
+
 
 # 2. 민경's 부분집합 이용 -> 시간초과
 # def subset(index, sum_w, sum_v):
