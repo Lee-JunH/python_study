@@ -12,18 +12,33 @@ backjoon_16637 - 괄호 추가 - G3
 - 어케풀라는거야~~~~
 - 괄호를 넣을 수 있는 자리를 찾아보자
 - 처음에는 안넣은 것과 같으니까 넘어간다
-- 
+
+
+중요한 조건
+- 중첩이 안되기 때문에 괄호를 넣을 자리는 각 연산자 위치 이다.
+- 즉 연속된 연산자에는 괄호를 넣지 못한다.
+- 또한 처음에는 안넣은 것과 동일하다.
 """
 
-def check_sik():
-    my_stack.append('(')
+def dfs_sik(index, cur):    # 괄호 계산을 할 인덱스, 현재 합
+    global max_hap
     
+    if index == len(sik):
+        if max_value < cur:
+            max_value = cur
+        return
+
+    next = cur, sik[index], sik[index-1]
+    dfs_sik(index+2, next)
+
+    if index+4 <= len(sik):
+        temp = sik[index+1], sik[index+3], sik[index+2]
+        next = cur, temp, sik[index]
+        dfs(index+4, next)
 
 N = int(input())
 sik = list(input().strip())
 
-my_stack = [sik[0]]
-for i in range(1, N):
-    if sik[i] in '+-*':
-        my_stack.append(sik[i])
-        check_sik()
+max_hap = 0
+dfs_sik(1, int(sik[0]))
+print(max_hap)
