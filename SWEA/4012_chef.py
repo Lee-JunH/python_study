@@ -21,46 +21,13 @@ SWEA_4012 - 요리사 - 모의 SW 역량테스트
 
 6개 인 경우 -> 모든 경우의 수는 6C3 인데 10개 까지만 계산하면 나머지는 순서만 다른 경우이다.
 
-123이면
-12 21 13 31 23 32 이거의 합
 
-456
-45 54 46 64 56 65 이거의 합
-
-123 456
-124 356
-125 346
-126 345
-134 256
-135 246
-136 245
-145 236
-146 235
-156 234
-
-234 156
-235 146
-236 145
-245 136
-246 135
-256 134
-345 126
-346 125
-356 124
-456 123
 """
-
-def divide(food1):      # 재료 나누기
-    food2 = []
-    for i in range(1, N+1):
-        if i not in food1:
-            food2.append(i)
-    return food2
 
 def taste(food):        # 재료 조합하기
     mat = 0
     for i in range(N//2):
-        for j in range(i, N//2):
+        for j in range(i+1, N//2):
             ingredient1 = food[i]-1
             infredient2 = food[j]-1
             mat += arr[ingredient1][infredient2] + arr[infredient2][ingredient1]
@@ -75,16 +42,18 @@ def calculate(food1, food2):   #   재료 조합하기
     cha = abs(taste1 - taste2)
     min_cha = min(min_cha, cha)
 
-def dfs(cnt):       # 재료 선택하기
+def dfs(start, cnt):       # 재료 선택하기
     if cnt == N//2:
-        calculate(food1, divide(food1))
+        food2 = [i for i in range(1, N+1) if not visited[i]]
+        calculate(food1, food2)
         return
 
-    for i in range(1, N+1):
-        if i not in food1:
-            food1.append(i)
-            dfs(cnt+1)
-            food1.pop()
+    for i in range(start+1, N+1):
+        food1.append(i)
+        visited[i] = True
+        dfs(i, cnt+1)
+        food1.pop()
+        visited[i] = False
 
 T = int(input())
 for case in range(T):
@@ -92,8 +61,10 @@ for case in range(T):
     arr = [list(map(int, input().split())) for _ in range(N)]
 
     min_cha = float('inf')
+    visited = [0 for _ in range(N+1)]
     food1 = [1]       # 음식 조합 담아둘 곳
+    visited[1] = True
 
-    dfs(1)
+    dfs(1, 1)
     
     print(f'#{case+1} {min_cha}')
