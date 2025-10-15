@@ -17,46 +17,54 @@ Backjoon_34559 - 건물 측량 - G3
 
 - 이 2가지만 하면 된다.
 - 1번에서 모든 0인 지점에서 하면 시간이 오래 걸리지 않을까? -> 당근 오래 걸릴것 같다.
+    - 대신에 0인 지점에서 bfs를 하면 그 지점들은 모두 땅이지 않을까?
 - 옆에가 열려있는지를 끝에서부터 확인할까? -> dp처럼 풀어보자.
     - 상하좌우를 확인하고 뚫림 여부를 저장하자 -> (상하좌우)로
 """
+import sys
+input = sys.stdin.readline
+from collections import deque
 
-def find_building():
-    for i in range(1, N):
-        for j in range(1, M):
-            check = 0
-            for dir in range(4):
-                nr = i + dr[dir]
-                nc = j + dc[dir]
-                if my_map[nr][nc] == 1:     # 건물이 주변에 있으면
-                    dp[nr][nc][dir] = 0     # 그쪽 방향은 막힘
-                    continue
-                if check == 0 and dp[nr][nc][dir] == 1:    # 뚫린 방향이 있으면
-                    check = 1                   # 건물 안짓기
-            if not check:
-                my_map[nr][nc] = 1
+def bfs():
+    q = deque()
+    q.append((0,0))
+    check[0][0] = 0
+    dr = [-1, 1, 0, 0]  # 상하좌우 순서
+    dc = [0, 0, -1, 1]
 
+    while q:
+        r, c = q.popleft()
+        for dir in range(4):
+            nr = r + dr[dir]
+            nc = c + dc[dir]
+            if nr < 0 or nr >= N or nc < 0 or nc >= M:
+                continue
+            if check[nr][nc] == 0 or my_map[nr][nc] == 1:
+                continue
+            q.append((nr, nc))
+            check[nr][nc] = 0
+
+def count_square():
+    for i in range(1, N+1):
+        for j in range(1, M+1):
+            dp[i][j] = dp[i-1][j] + dp[i][j-1] - dp[i-1][j-1] + check[i-1][j-1]
 
 N, M = map(int, input().split())
 my_map = [list(map(int, input().strip())) for _ in range(N)]
 Q = int(input())
 
-dr = [-1, 1, 0, 0]  # 상하좌우 순서
-dc = [0, 0, -1, 1]
-# 지도 최신화 하기
-dp = [[(1,1,1,1)] * M] * N
-find_building()
+check = [[1 for _ in range(M)] for _ in range(N)]
+bfs()
+
+dp = [[0 for _ in range(M+1)] for _ in range(N+1)]
+count_square()
 
 for _ in range(Q):
     r1, c1, r2, c2 = map(int, input().split())
 
-    building = 0
+    building = dp[r2][c2] - dp[r2][c1-1] - dp[r1-1][c2] + dp[r1-1][c1-1]
 
-    for i in range(r1-1, r2):
-        for j in range(c1-1, c2):
-            if my_map[i][j] == 1:
-                building += 1
-    if building == 0:
-        print('YES')
-    else:
+    if building != 0:
         print(f'No {building}')
+    else:
+        print('YES')
