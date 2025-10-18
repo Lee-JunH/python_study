@@ -16,34 +16,72 @@ Backjoon_17144 - 미세먼지 안녕! - G4
 - bfs를 하는 과정에서 확산 방향 수 계산과 공기청정기 바람을 추가해주면 될 것 같다.
 """
 
-from collections import deque
+def spread(cur):
+    fine_dust = [[0 for _ in range(C)] for _ in range(R)]
 
-def spread(d):
-    fine_dust = deque(d)
-    while fine_dust:
-        r, c = fine_dust.popleft()
-        for dir in range(dir):
-            nr = r + dr[dir]
-            nc = c + dc[dir]
-            if nr < 0 or nr >= R or nc < 0 or nc >= C:  # 인덱스 초과
-                continue
-            if room[nr][nc] == -1:  # 공기청정기
-                continue
+    for r in range(R):
+        for c in range(C):
+            if cur[r][c] == -1:
+                fine_dust[r][c] = -1
+            elif cur[r][c] > 0:
+                cnt = 0  # 퍼진 방향 수
+                mini_dust = cur[r][c] // 5     # 퍼지는 먼지
+                for dir in range(4):
+                    nr = r + dr[dir]
+                    nc = c + dc[dir]
+                    if nr < 0 or nr >= R or nc < 0 or nc >= C:  # 인덱스 초과
+                        continue
+                    if cur[nr][nc] == -1:  # 공기청정기
+                        continue
+                    cnt += 1
+                    fine_dust[nr][nc] += mini_dust
+                fine_dust[r][c] += cur[r][c] - mini_dust * cnt
+    return fine_dust
+
+def rotate(a, ud):
+    r, c = (a,1)
+    dir = 0
+    prev = 0
+    while True:
+        nr = r + dr[dir]
+        nc = c + dc[dir]
+        if nr < 0 or nr >= R or nc < 0 or nc >= C:
+            if ud == 'up':
+                dir += 1    # 우 상 좌 하
+            elif ud == 'down':
+                dir = (dir+3) % 4   # 우 하 좌 상
+            continue
+        if nr == a and nc == 0:
+            break
+        prev, temp[r][c] = temp[r][c], prev
+        r, c = nr, nc
+    
+
+def air_purifier():
+    rotate(air, 'up')
+    rotate(air+1, 'down')
+    
 
 R, C, T = map(int, input().split())
 room = [list(map(int, input().split())) for _ in range(R)]
 
-# 1. 초기 먼지 저장
-dust = []
-for i in range(R):
-    for j in range(C):
-        if room[i][j] > 0:
-            dust.append((i,j))
-
-dr = [0, 1, 0, -1]
+dr = [0, -1, 0, 1]  # 우, 상, 좌, 하
 dc = [1, 0, -1, 0]
 
-for time in range(T):
-    spread(dust)
+for i in range(2, R):
+        if room[i][0] == -1:
+            air = i
+            break
 
-print(sum(dust) + 2)
+temp = room
+for time in range(T):
+    temp = spread(temp)
+    air_purifier()
+
+result = 0
+for i in range(R):
+    for j in range(C):
+        if temp[i][j] > 0:
+            result += temp[i][j]
+
+print(result)
