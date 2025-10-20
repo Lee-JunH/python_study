@@ -13,15 +13,21 @@ SWEA_4530 - 극한의 청소 작업 - D4
     - 4가 있는 경우를 어떻게 찾을 수 있을까?
 - 1~10은 9개, 11~20은 9개 ,..., 31~39, 50~60, ...
 - 즉 2자리 조합에서 9개 짜리가 9세트 있다. 9의 1제곱
-- 3자리일 때도 
 """
 
 def count_four(num):
-    count = 0
+    count = 0   # 개수 세기
+    gop = 0     # 자리수 
+    num = abs(num)
     while num > 0:
-        share = num // 10
-        remain = num % 10
-        count += 
+        remain = num % 10   # 끝자리(나머지)
+        num = num // 10   # 몫S
+        if remain >= 4:
+            count += (remain - 1) * (9 ** gop)
+        else:
+            count += remain * (9 ** gop)
+        gop += 1
+    return count
 
 
 T = int(input())
@@ -34,5 +40,5 @@ for case in range(T):
     if A < 0 < B:
         result = a + b - 1
     else:
-        result = b - a
-    print(f'#{case+1} {result}')
+        result = abs(b - a)
+    print(f'#{case+1} {result}') 
