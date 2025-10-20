@@ -10,37 +10,38 @@ Backjoon_7562 - 나이트의 이동 - S1
 
 from collections import deque
 
-def djsktra(start, end):
+def dijkstra(start, end):
+    r_s, c_s = start
     r_e, c_e = end
 
     vis = [[0 for _ in range(N)] for _ in range(N)]
-    vis[start[0]][start[1]] = 1
+    vis[r_s][c_s] = 1
     my_q = deque([start])
-    count = 0
 
     while my_q:
-        cur = my_q.popleft()
-        if cur == end:
-            return count
+        r, c = my_q.popleft()
+        if r == r_e and c == c_e:
+            break
         for dir in range(8):
-            nr = cur[0] + dr[dir]
-            nc = cur[1] + dc[dir]
+            nr = r + dr[dir]
+            nc = c + dc[dir]
             if nr < 0 or nr >= N or nc < 0 or nc >= N:
                 continue
-            if vis[nr][nc] == 1:
+            if vis[nr][nc] != 0:
                 continue
-            vis[nr][nc] = 1
+            vis[nr][nc] = vis[r][c] + 1
             my_q.append((nr, nc))
-        count += 1
-
+            if nr == r_e and nc == c_e:
+                break
+    return vis[r_e][c_e]
 
 T = int(input())
 for _ in range(T):
     N = int(input())
-    start = tuple(input().split())
-    end = tuple(input().split())
+    start = tuple(map(int, input().split()))
+    end = tuple(map(int, input().split()))
 
-    dr = [-2, -1, 1, 2, 2, 1, -1, -2]
+    dr = [-2, -1, 1, 2, 2, 1, -1, -2]   # 이동 가능 칸들
     dc = [1, 2, 2, 1, -1, -2, -2, -1]
 
-    djkstra(start, end)
+    print(dijkstra(start, end) - 1)
