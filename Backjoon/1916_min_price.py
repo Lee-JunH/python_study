@@ -16,6 +16,8 @@ def dijkstra():
     dist[start] = 0
     while my_heapq:
         cur_price, cur = heappop(my_heapq)
+        if dist[cur] < cur_price:
+            continue
         for next, next_price in nodes[cur]:
             price = cur_price + next_price
             if dist[next] > price:
