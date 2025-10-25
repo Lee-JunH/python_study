@@ -23,13 +23,15 @@ truck = deque(list(map(int, input().split())))
 bridge = deque([0] * w)    # 다리 위 정보
 time = 0    # 시간 저장
 
-while bridge:
+while bridge:   # 다리 위에 트럭이 없을 때 까지
     time += 1
-    bridge.popleft()
+    bridge.popleft()    # 한칸 씩 왼쪽으로 옮기기
+
+    # 트럭이 안남아 있으면 왼쪽으로 계속 옮기기
     if truck:
-        if sum(bridge) + truck[0] <= L:
+        if sum(bridge) + truck[0] <= L: # 트럭 더 올리고 한칸 이동
             new_truck = truck.popleft()
             bridge.append(new_truck)
         else:
-            bridge.append(0)        
+            bridge.append(0)    # 한칸 이동
 print(time)
