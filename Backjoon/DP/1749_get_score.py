@@ -13,6 +13,13 @@ Backjoon_1749 - 점수 따먹기 - G4
     - 이 방법은 다중 for문 방식이기 때문에 시간이 너무 오래 걸린다.
 
 - N, M은 최대 200
+- 최대 시간은 200^4 = 1,600,000,000 16억
+- 파이썬에서 3천만번의 연산이 1초에 가능하다.
+- 즉 이 코드는 50초 정도의 시간이 예상된다.
+
+- 200^3 = 8,000,000 8백만번
+- 1초 안에 연산이 가능하다.
+- 3중 for문일 때 시간초과가 안날것 같다.
 """
 
 import sys
@@ -37,3 +44,9 @@ for x1 in range(1, N+1):
                 max_hap = max(max_hap, total)
 
 print(max_hap)
+
+
+N, M = map(int, input().split())
+matrix = [list(map(int, input().split())) for _ in range(N)]
+
+max_mat = [[0 for _ in range(M+1)] for _ in range(N+1)]
