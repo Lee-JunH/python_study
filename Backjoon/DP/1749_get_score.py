@@ -11,42 +11,57 @@ Backjoon_1749 - 점수 따먹기 - G4
 - DP를 이용하는 문제이다.
 - 각 위치에서의 최대 합을 구하고 그 값을 이용하여 부분행렬을 구간을 설정하여 최대 합을 구할 수 있다.
     - 이 방법은 다중 for문 방식이기 때문에 시간이 너무 오래 걸린다.
-
-- N, M은 최대 200
-- 최대 시간은 200^4 = 1,600,000,000 16억
-- 파이썬에서 3천만번의 연산이 1초에 가능하다.
-- 즉 이 코드는 50초 정도의 시간이 예상된다.
-
-- 200^3 = 8,000,000 8백만번
-- 1초 안에 연산이 가능하다.
-- 3중 for문일 때 시간초과가 안날것 같다.
 """
 
-import sys
-input = sys.stdin.readline
+def kadane_1d(arr):
+    # 1차원 최대 연속 부분합 (모두 음수여도 동작)
+    best = cur = arr[0]
+    for i in range(1, len(arr)):
+        x = arr[i]
+        cur = max(x, cur + x)
+        best = max(best, cur)
+    return best
 
 N, M = map(int, input().split())
-matrix = [list(map(int, input().split())) for _ in range(N)]
+A = [list(map(int, input().split())) for _ in range(N)]
 
-max_mat = [[0 for _ in range(M+1)] for _ in range(N+1)]
+NEG_INF = -10**18
+ans = NEG_INF
 
-for i in range(1, N+1):
-    for j in range(1, M+1):
-        max_mat[i][j] = max_mat[i-1][j] + max_mat[i][j-1] - max_mat[i-1][j-1] + matrix[i - 1][j - 1]
+# 행 압축 + 1D 카데인
+for top in range(N):
+    col_sum = [0] * M  # top이 바뀔 때마다 초기화
+    for bottom in range(top, N):
+        # top..bottom 사이 행들을 열별로 누적
+        for c in range(M):
+            col_sum[c] += A[bottom][c]
+        # 누적된 열합 배열에서 최대 연속 부분합
+        ans = max(ans, kadane_1d(col_sum))
 
-max_hap = -float('inf')
-
-for x1 in range(1, N+1):
-    for y1 in range(1, M+1):
-        for x2 in range(x1, N+1):
-            for y2 in range(y1, M+1):
-                total = max_mat[x2][y2] - max_mat[x1 - 1][y2] - max_mat[x2][y1 - 1] + max_mat[x1 - 1][y1 - 1]
-                max_hap = max(max_hap, total)
-
-print(max_hap)
+print(ans)
 
 
-N, M = map(int, input().split())
-matrix = [list(map(int, input().split())) for _ in range(N)]
+# N, M = map(int, input().split())
+# matrix = [list(map(int, input().split())) for _ in range(N)]
 
-max_mat = [[0 for _ in range(M+1)] for _ in range(N+1)]
+# max_mat = [[0 for _ in range(M+1)] for _ in range(N+1)]
+
+# for i in range(1, N+1):
+#     for j in range(1, M+1):
+#         max_mat[i][j] = max_mat[i-1][j] + max_mat[i][j-1] - max_mat[i-1][j-1] + matrix[i - 1][j - 1]
+
+# max_hap = -float('inf')
+
+# for x1 in range(1, N+1):
+#     for y1 in range(1, M+1):
+#         for x2 in range(x1, N+1):
+#             for y2 in range(y1, M+1):
+#                 total = max_mat[x2][y2] - max_mat[x1 - 1][y2] - max_mat[x2][y1 - 1] + max_mat[x1 - 1][y1 - 1]
+#                 max_hap = max(max_hap, total)
+
+# print(max_hap)
+
+# N, M = map(int, input().split())
+# matrix = [list(map(int, input().split())) for _ in range(N)]
+
+# max_mat = [[0 for _ in range(M+1)] for _ in range(N+1)]
