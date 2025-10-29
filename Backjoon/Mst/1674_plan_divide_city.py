@@ -18,6 +18,41 @@ Backjoon_1674 - 도시 분할 계획 - G4
 - 최소 신장트리로 연결된 값중 가장 긴 것을 빼자!
 """
 
+# prim Algirthm
+
+import sys
+from heapq import heappop, heappush, heapify
+input = sys.stdin.readline
+
+N, M = map(int, input().split())
+
+graph = [[] for _ in range(N+1)]    # 간선 연결
+for _ in range(M):
+    a, b, c = map(int, input().split())
+    graph[a].append((c, a, b))
+    graph[b].append((c, b, a))
+
+# 1부터 시작
+vis = [0 for _ in range(N+1)]
+
+vis[1] = 1
+my_heapq = graph[1]
+heapify(my_heapq)
+price = []  # 가중치 저장 리스트
+cnt = 0
+
+while my_heapq:
+    p, start, end = heappop(my_heapq)
+    if not vis[end]:
+        vis[end] = 1
+        price.append(p)
+        cnt += 1
+        if cnt == N-1:
+            break
+        for new in graph[end]:
+            heappush(my_heapq, new)
+print(sum(price) - max(price))
+
 # import sys
 # input = sys.stdin.readline
 
@@ -53,39 +88,3 @@ Backjoon_1674 - 도시 분할 계획 - G4
 #         if cnt == N-1:
 #             break
 # print(sum(result) - max(result))
-
-
-# prim Algirthm
-
-import sys
-input = sys.stdin.readline
-
-from heapq import heappop, heappush, heapify
-N, M = map(int, input().split())
-
-graph = [[] for _ in range(N+1)]    # 간선 연결
-for _ in range(M):
-    a, b, c = map(int, input().split())
-    graph[a].append((c, a, b))
-    graph[b].append((c, b, a))
-
-# 1부터 시작
-vis = [0 for _ in range(N+1)]
-
-vis[1] = 1
-my_heapq = graph[1]
-heapify(my_heapq)
-price = []  # 가중치 저장 리스트
-cnt = 0
-
-while my_heapq:
-    p, start, end = heappop(my_heapq)
-    if not vis[end]:
-        vis[end] = 1
-        price.append(p)
-        cnt += 1
-        if cnt == N-1:
-            break
-        for new in graph[end]:
-            heappush(my_heapq, new)
-print(sum(price) - max(price))
