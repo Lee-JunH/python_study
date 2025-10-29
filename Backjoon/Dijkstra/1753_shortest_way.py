@@ -8,8 +8,8 @@ Backjoon_1753 - 최단경로 - G4
 - 다익스트라 구현 
 """
 import sys
-input = sys.stdin.readline
 from heapq import heappop, heappush
+input = sys.stdin.readline
 
 def dijkstra():
     heap = []
