@@ -7,6 +7,10 @@ backjoon_1260 - DFS와 BFS - S2
 - 더 이상 방문할 수 있는 점이 없는 경우 종료
 """
 
+import sys
+from collections import deque
+input = sys.stdin.readline  # input함수를 이걸로 덮어쓰는 것이다.
+
 # 이번 문제는 출력만 하면 되니까 스택사용 X
 def dfs_v2(start):
         print(start, end=' ')
@@ -30,10 +34,6 @@ def bfs():
                 vis[child] = True
                 my_q.append(child)
 
-import sys
-input = sys.stdin.readline  # input함수를 이걸로 덮어쓰는 것이다.
-from collections import deque
-
 N, M, V = map(int, input().split())
 node = [[] for _ in range(N+1)]
 
@@ -42,8 +42,8 @@ for _ in range(M):
     p, c = map(int, input().split())
     node[p].append(c)
     node[c].append(p)
-for l in node:
-    l.sort()
+for i in node:
+    i.sort()
 
 #1. dfs는 재귀를 사용하여 변수를 미리 선언
 visited = [0 for _ in range(N+1)]	# 방문 여부 체크
