@@ -11,10 +11,10 @@ Backjoon_1197 - 최소 스패닝 트리 - G4
 - import하면 492ms, 안하면 2920ms
 """
 
+import heapq
 import sys
 input = sys.stdin.readline
 
-import heapq
 V, E = map(int, input().split())
 
 graph = [[] for _ in range(V+1)]
