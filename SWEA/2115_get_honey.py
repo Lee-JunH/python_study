@@ -22,11 +22,13 @@ def except_case(lst):
     # C보다 작은 조합 구하기
     big = 1
     result = 0
-    for i in range(1<<M):
+    for i in range(1<<M):   # 비트연산으로 모든 조합 구하기
         my_lst = []
         for j in range(M):
             if i & (1<<j):
                 my_lst.append(lst[j])
+
+        # 구한 리스트로 제곱 값 구하기
         hap = sum(my_lst)
         if hap <= C and hap >= big:
             big = hap
@@ -35,7 +37,7 @@ def except_case(lst):
                 result = temp
     return result
 
-def find_max(pick):
+def find_max(pick):     # 큰 조합 찾기
     r, c = pick
     tong = []
     profit = 0
@@ -43,9 +45,9 @@ def find_max(pick):
     for new_c in range(c, c+M):
         tong.append(honey[r][new_c])
 
-    if sum(tong) <= C:
+    if sum(tong) <= C:      # 합이 C보다 작으면 모든 값 제곱한 값 리턴
         profit = double_value(tong)
-    else:
+    else:                   # 합이 C보다 크면 조합 찾아서 가장 큰 값 리턴
         profit = except_case(tong)
 
     return profit
@@ -61,24 +63,19 @@ for case in range(T):
         for j in range(N - M + 1):
             pick1 = (i, j)
             first_max = find_max(pick1)     # 첫번째 값 정하기
-            if first_max < first_big:
+            if first_max < first_big:   # 결과가 더 작으면 다음은 안하기
                 continue
             else:
                 first_big = first_max
 
-            second_big = 0
             for a in range(i, N):
-                for b in range(N- M + 1):
+                for b in range(N - M + 1):
                     if i == a:
                         b += j + M
                         if b >= N-M+1:
                             break
                     pick2 = (a, b)
                     second_max = find_max(pick2)    # 두번째 값 정하기
-                    if second_max < second_big:
-                        continue
-                    else:
-                        second_big = second_max
                     
                     if max_profit < first_max + second_max:
                         max_profit = first_max + second_max
