@@ -10,7 +10,6 @@ SWEA_4615 - 재미있는 오셀로 게임 - D3
 """
 
 def check_stone(r, c, me):
-    check = False
     dr = [-1, 0, 1, 0, -1, 1, 1, -1]
     dc = [0, 1, 0, -1, 1, 1, -1, -1]
 
@@ -24,16 +23,19 @@ def check_stone(r, c, me):
         nc = c + dc[dir]
         if nr < 0 or nr >= N or nc < 0 or nc >= N:
             continue
-        if board[nr][nc] == you:    # 다음이 상대 돌이고
-            new_r = nr + dr[dir]
-            new_c = nc + dc[dir]
-            if new_r < 0 or new_r >= N or new_c < 0 or new_c >= N:  # 다다음이 내 돌인 경우
-                continue
-            if board[nr + dr[dir]][nc + dc[dir]] == me: # 나 - 너 - 나 인경우
-                board[nr][nc] = me  # 바꾸기
-                check = True
-    if check:
-        board[r][c] = me
+        if board[nr][nc] != you:
+            continue
+
+        flip = []
+
+        while (0 <= nr < N and 0 <= nc < N and board[nr][nc] == you):
+            flip.append((nr, nc))
+            nr += dr[dir]
+            nc += dc[dir]
+
+        if 0 <= nr < N and 0 <= nc < N and board[nr][nc] == me and flip:
+            for nx, ny in flip:
+                board[nx][ny] = me
 
 T = int(input())
 for case in range(T):
@@ -48,7 +50,7 @@ for case in range(T):
 
     for i in range(M):
         a, b, color = map(int, input().split())
-
+        board[b-1][a-1] = color
         check_stone(b-1, a-1, color)
     
     black = 0
@@ -60,3 +62,19 @@ for case in range(T):
             elif board[i][j] == 2:
                 white += 1
     print(f'#{case+1} {black} {white}')
+
+
+# 1
+# 4 12
+# 1 2 1
+# 1 1 2
+# 4 3 1
+# 4 4 2
+# 2 1 1
+# 4 2 2
+# 3 4 1
+# 1 3 2
+# 2 4 1
+# 1 4 2
+# 4 1 2
+# 3 1 2
