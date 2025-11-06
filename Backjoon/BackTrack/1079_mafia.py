@@ -20,22 +20,42 @@ Backjoon_1079 - 마피아 - G2
 
 풀이
 - 밤에는 랜덤으로 죽여야 하기 때문에 백트래킹으로 한사람씩 죽이면서 나간다.
+- 
 """
 
-def backtrack():
-    for i in range(N):
-        pass
+def backtrack(people, new_night):
+    global night
+
+    if alive == 0:
+        night = max(night, new_night)
+        return
+    if live[mafia] == 0:    # 마피아는 죽으면 안됨
+        return
+
+    if people % 2 == 0:  # 밤
+        # 죽였을 때
+        for i in range(N):
+            if i != mafia and live[i] != 0:
+                guilty[i] += R[죽을 사람 번호][i]
+
+    else:           # 낮
+        death = 0
+        max_guilty = -float('inf')
+        for i in range(N):      # 유죄지수 가장 높은 사람 죽이기
+            if live[i] != 0 and i != mafia:
+                if guilty[i] > max_guilty:
+                    max_guilty = guilty[i]
+                    death = i
+        live[death] = 0     # 주금
 
 N = int(input())
 guilty = list(map(int, input().split()))
 R = [list(map(int, input().split())) for _ in range(N)]
 mafia = int(input())
 
+night = 0
+
 live = [1 for _ in range(N)]    # 생사 여부 체크 리스트
 alive = N - 1   # 살아있는 시민 수
 
-if N % 2 == 0:  # 밤
-    pass
-else:           # 낮
-    for i in range(N):
-        pass
+backtrack(N, )
