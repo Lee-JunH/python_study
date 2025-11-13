@@ -1,4 +1,6 @@
-# baekjoon_2304 - 창고 다각형 - S2
+"""
+Baekjoon_2304 - 창고 다각형 - S2
+"""
 
 num = int(input())
 lst = []
