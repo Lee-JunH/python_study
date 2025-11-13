@@ -18,57 +18,52 @@ Backjoon_16235 - 나무 재테크 - G3
 - K년이 지난 후 상도의 땅에 살아있는 나무의 개수는?
 """
 
-def spring():
+def spring_and_summer():
     for i in range(N):
         for j in range(N):
-            if trees[i][j]:
+
+            if trees[i][j]: # 나무가 있으면
+                trees[i][j].sort()
                 for k in range(len(trees[i][j])):
-                    if food[i][j] >= trees[i][j][k]:
+                    if food[i][j] >= trees[i][j][k]:    # 봄
                         food[i][j] -= trees[i][j][k]
                         trees[i][j][k] += 1
-                    else:
+                    else:   # 여름
                         for _ in range(k, len(trees[i][j])):
                             food[i][j] += trees[i][j].pop() // 2
                         break
     return
 
-def summer():
-    pass
-
-def autumn():
+def autumn_and_winter():
     for i in range(N):
         for j in range(N):
-            for k in range(len(trees[i][j])):
-                if trees[i][j][k] % 5 == 0:
+
+            for k in range(len(trees[i][j])):   # 나무가 있으면
+                if trees[i][j][k] % 5 == 0: # 가을
                     for l in range(8):
                         nx = i + dx[l]
                         ny = j + dy[l]
                         if 0 <= nx < N and 0 <= ny < N:
-                            trees[nx][ny].appendleft(1)
-            food[i][j] += dead[i][j]
+                            trees[nx][ny].append(1)
+            food[i][j] += A[i][j]
     return
-
-def winter():
-    pass
 
 N, M, K = map(int, input().split())     # N: 쿠기, M: 심는 나무, K: 지난 년 수
 A = [list(map(int, input().split())) for _ in range(N)]
 tree_temp = [list(map(int, input().split())) for _ in range(M)]
 
-dx = [-1, -1, -1, 0, 0, 1, 1, 1]
+dx = [-1, -1, -1, 0, 0, 1, 1, 1]    # 8방향
 dy = [-1, 0, 1, -1, 1, -1, 0, 1]
+
 food = [[5 for _ in range(N)] for _ in range(N)]
 trees = [[[] for _ in range(N)] for _ in range(N)]
-dead = [[0 for _ in range(N)] for _ in range(N)]
 
 for x, y, z in tree_temp:        # 나무 정보 입력
     trees[x-1][y-1].append(z)
 
 for _ in range(K):
-    spring()
-    summer()
-    autumn()
-    winter()
+    spring_and_summer()
+    autumn_and_winter()
 
 answer = 0
 for i in range(N):
