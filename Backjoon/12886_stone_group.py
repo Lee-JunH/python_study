@@ -11,11 +11,38 @@ Backjoon_12886 - 돌 그룹 - G4
 
 풀이
 - 2개를 선택하는 경우는 3가지로 A,B B,C A,C 가 있다.
-- 이 3가지에 대해 백트래킹?
+- 이 3가지에 대해 백트래킹, bfs?
 """
 
+from collections import deque
+
 def stone_group():
-    pass
+    my_stone = deque([(A,B,C)])
+
+    vis = set()
+    vis.add((A,B,C))
+
+    while my_stone:
+        s1, s2, s3 = my_stone.popleft()
+        if s1 == s2 == s3:
+            return 1
+        for a, b, c in (s1,s2,s3), (s2, s3, s1), (s3, s1, s2):
+            if a == b:
+                continue
+            elif a > b:
+                big = a
+                small = b
+            else:
+                big = b
+                small = a
+            
+            if (a,b,c) not in vis:
+                vis.add((big-small, small+small, c))
+                my_stone.append((big-small, small+small, c))
+    return 0
 
 A, B, C = map(int, input().split())
 
+stone = A + B + C
+
+print(stone_group())
