@@ -17,28 +17,28 @@ Backjoon_12886 - 돌 그룹 - G4
 from collections import deque
 
 def stone_group():
-    my_stone = deque([(A,B,C)])
+    my_stone = deque([(A,B)])
 
     vis = set()
-    vis.add((A,B,C))
+    vis.add((A,B))
 
     while my_stone:
-        s1, s2, s3 = my_stone.popleft()
+        s1, s2 = my_stone.popleft()
+        s3 = stone - s1 - s2
         if s1 == s2 == s3:
             return 1
-        for a, b, c in (s1,s2,s3), (s2, s3, s1), (s3, s1, s2):
+        for a, b, c in (s1, s2, s3), (s2, s3, s1), (s3, s1, s2):
             if a == b:
                 continue
             elif a > b:
-                big = a
-                small = b
-            else:
-                big = b
-                small = a
-            
-            if (a,b,c) not in vis:
-                vis.add((big-small, small+small, c))
-                my_stone.append((big-small, small+small, c))
+                a, b = b, a
+
+            # 큰 값과, 작은값을 기준으로 방문 체크하기
+            big = max(a+a, b-a, c)
+            small = min(a+a, b-a, c)
+            if (big, small) not in vis:
+                vis.add((big, small))
+                my_stone.append((big, small))
     return 0
 
 A, B, C = map(int, input().split())
