@@ -13,8 +13,55 @@ Backjoon_1022 - 소용돌이 예쁘게 출력하기 - G3
 범위 (-5,000 ≤ r1, c1, r2, c2 ≤ 5,000)
 
 풀이
-- 일단 무조건 왼쪽 아래가 가장 큰 값이다.
+- 찾은 규칙
+    - 0, 1, 2 일때 최대 값은 1, 9, 25, 49... 으로 1, 3, 5, 7,... 의 제곱 값이다.
+
 """
+
+def num_len(num):
+    length = 0
+    if num == 0:
+        return 1
+    while num > 0:
+        length += 1
+        num //= 10
+    return length
 
 r1, c1, r2, c2 = map(int, input().split())
 
+result = [[0 for _ in range(c2-c1+1)] for _ in range(r2-r1+1)]
+
+for r in range(r1, r2+1):
+    for c in range(c1, c2+1):
+        level = max(abs(r), abs(c))
+        if level == 0:
+            result[r-r1][c-c1] = 1
+            continue
+
+        one_line = (level + 1) * 2 - 1  # 한 변의 개수
+
+        max_down = one_line ** 2
+        max_left = max_down - one_line + 1
+        max_up = max_left - one_line + 1
+        max_right = max_up - one_line + 1
+
+        if r == level:
+            result[r-r1][c-c1] = max_down - (level-c)
+        elif c == -level:
+            result[r-r1][c-c1] = max_left - (level-r)
+        elif r == -level:
+            result[r-r1][c-c1] = max_up - (level+c)
+        elif c == level:
+            result[r-r1][c-c1] = max_right - (level+r)
+max_num = 0
+for i in range(r2-r1+1):
+    for j in range(c2-c1+1):
+        if result[i][j] > max_num:
+            max_num = result[i][j]
+
+max_len = num_len(max_num)   # 가장 긴 길이 찾기
+
+for i in range(r2-r1+1):
+    for j in range(c2-c1+1):
+        print(f"{' ' * (max_len - num_len(result[i][j]))}{result[i][j]}", end=' ')
+    print()
