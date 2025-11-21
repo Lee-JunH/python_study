@@ -16,22 +16,23 @@ Backjoon_13335 - 트럭 - S1
 """
 
 from collections import deque
-
+# n : 트럭의 수, w : 다리길이, L : 다리 최대 하중
 n, w, L = map(int, input().split())
-truck = deque(list(map(int, input().split())))
+trucks = deque(list(map(int, input().split())))
 
-bridge = deque([0] * w)    # 다리 위 정보
-time = 0    # 시간 저장
+#다리 크기 만큼의 리스트를 만들고 하나씩 append하면서 최대 중량 안넘게 하기
 
-while bridge:   # 다리 위에 트럭이 없을 때 까지
+bridge = deque([0] * w) # 다리 길이 크기의 리스트
+time = 0
+
+while bridge:
     time += 1
-    bridge.popleft()    # 한칸 씩 왼쪽으로 옮기기
+    bridge.popleft()
 
-    # 트럭이 안남아 있으면 왼쪽으로 계속 옮기기
-    if truck:
-        if sum(bridge) + truck[0] <= L: # 트럭 더 올리고 한칸 이동
-            new_truck = truck.popleft()
-            bridge.append(new_truck)
+    if trucks:  # 트럭이 남아 있으면
+        if sum(bridge) + trucks[0] < L:    # 다리에 올릴 수 있는지 확인
+            new_truck = trucks.popleft()    # 올릴 트럭
+            bridge.append(new_truck)    # 다리에 올리기
         else:
-            bridge.append(0)    # 한칸 이동
+            bridge.append(0)
 print(time)
