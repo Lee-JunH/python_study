@@ -30,7 +30,7 @@ while bridge:
     bridge.popleft()
 
     if trucks:  # 트럭이 남아 있으면
-        if sum(bridge) + trucks[0] < L:    # 다리에 올릴 수 있는지 확인
+        if sum(bridge) + trucks[0] <= L:    # 다리에 올릴 수 있는지 확인
             new_truck = trucks.popleft()    # 올릴 트럭
             bridge.append(new_truck)    # 다리에 올리기
         else:
