@@ -17,19 +17,18 @@ from collections import deque
 
 def solution(maps):
     answer = []
-    N = 0
-    M = 0
-    for i in maps:
-        N += 1
-    M = len(list(maps[0]))
-    
+    N = len(maps)
+    M = len(maps[0])
+    for i in range(N):
+        maps[i] = list(maps[i])
+
     vis = [[0 for _ in range(M)] for _ in range(N)]
     for i in range(N):
         for j in range(M):
             if not vis[i][j] and maps[i][j] != 'X':
                 my_q = deque([(i,j)])
                 vis[i][j] = 1
-                island = maps[i][j]
+                island = int(maps[i][j])
                 
                 while my_q:
                     r, c = my_q.popleft()
@@ -42,7 +41,7 @@ def solution(maps):
                             continue
                         vis[nr][nc] = 1
                         my_q.append((nr, nc))
-                        island += maps[nr][nc]
+                        island += int(maps[nr][nc])
                 answer.append(island)
     if not answer:
         answer.append(-1)
