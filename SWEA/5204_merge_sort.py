@@ -44,5 +44,5 @@ for case in range(T):
     arr = list(map(int, input().split()))
 
     cnt = 0
-    merge_sort(arr)
-    print(f'#{case+1} {arr[N//2 - 1]} {cnt}')
+    temp = merge_sort(arr)[N//2]
+    print(f'#{case+1} {temp} {cnt}')
