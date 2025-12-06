@@ -15,18 +15,26 @@ for _ in range(T):
     W = input()
     K = int(input())
 
-    result = []
+    min_string = 10000
+    max_string = 0
 
     words = [0 for _ in range(26)]      # 문자 수 세는 리스트
-    words_idx = [0 for _ in range(26)]  # 길이 세는 리스트
+    words_idx = [[] for _ in range(26)]  # 길이 세는 리스트
     for i in range(len(W)):
         num = ord(W[i]) - 97
         words[num] += 1
-
-        for j in range(26):
-            if words[j] >= 1:
-                words_idx += 1
-        
-        if words[num] == K:
-            result.append(words_idx[num])
-            
+        words_idx[num].append(i)
+    
+    check = False
+    for i in range(26):
+        if words[i] >= K:
+            check = True
+            for j in range(len(words_idx[i]) - K + 1):
+                new_arr = words_idx[i][j:j+K]
+                min_string = min(min_string, new_arr[-1] - new_arr[0] + 1)
+                max_string = max(max_string, new_arr[-1] - new_arr[0] + 1)
+    
+    if check:
+        print(f'{min_string} {max_string}')
+    else:
+        print(-1)
