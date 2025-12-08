@@ -20,13 +20,14 @@ for _ in range(T):
 
     words = [0 for _ in range(26)]      # 문자 수 세는 리스트
     words_idx = [[] for _ in range(26)]  # 길이 세는 리스트
-    for i in range(len(W)):
+
+    for i in range(len(W)):     # 문자 개수와 인덱스 값 저장
         num = ord(W[i]) - 97
         words[num] += 1
         words_idx[num].append(i)
     
     check = False
-    for i in range(26):
+    for i in range(26):     # K개 이상인 문자만 확인
         if words[i] >= K:
             check = True
             for j in range(len(words_idx[i]) - K + 1):
