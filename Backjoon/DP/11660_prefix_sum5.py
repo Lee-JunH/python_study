@@ -5,6 +5,9 @@ Backjoon_11660 - 구간 합 구하기5 - S1
 - N×N개의 수가 N×N 크기의 표에 채워져 있다. (x1, y1)부터 (x2, y2)까지 합을 구하는 문제
 """
 
+import sys 
+input = sys.stdin.readline
+
 N, M = map(int, input().split())
 maps = [list(map(int, input().split())) for _ in range(N)]
 
