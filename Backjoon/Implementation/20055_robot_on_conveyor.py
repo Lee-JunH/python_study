@@ -18,6 +18,33 @@ Backjoon_20055 - 컨베이어 벨트 위의 로봇 - G5
 - 종료되었을 때 몇 번째 단계가 진행중이었는가?
 """
 
-N, K = map(int, input().split())
-belt = list(map(int, input().split()))
+from collections import deque
 
+N, K = map(int, input().split())
+belt = deque(map(int, input().split()))
+
+robot = deque([0] * N)
+step = 0
+
+while True:
+    step += 1
+    # 1
+    belt.rotate(1)
+    robot[-1] = 0
+    robot.rotate(1)
+    robot[-1] = 0
+    # 2
+    for i in range(N - 2, -1, -1):
+        if belt[i + 1] >= 1 and robot[i + 1] == 0 and robot[i] == 1:
+            robot[i + 1] = 1
+            robot[i] = 0
+            belt[i + 1] -= 1
+    robot[-1] = 0
+    # 3
+    if belt[0] != 0 and robot[0] != 1:
+        robot[0] = 1
+        belt[0] -= 1
+    # 4
+    if belt.count(0) >= K:
+        break
+print(step)
