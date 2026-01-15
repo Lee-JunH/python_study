@@ -16,3 +16,17 @@ Backjoon_21735 - 눈덩이 굴리기 - S3
 N, M = map(int, input().split())
 snowballs = list(map(int, input().split()))
 
+def snow(time, pos, size):
+    global snowball
+
+    if time == M or pos >= N-1:
+        snowball = max(snowball, size)
+        return
+    if pos+1 < N:
+        snow(time+1, pos+1, size+snowballs[pos+1])
+    if pos+2 < N:
+        snow(time+1, pos+2, (size//2) + snowballs[pos+2])
+
+snowball = 0
+snow(0, -1, 1)
+print(snowball)
