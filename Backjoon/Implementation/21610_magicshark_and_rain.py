@@ -27,11 +27,10 @@ def move_clouds(d, s):  # 수학식으로 계산하자
 
 def add_water():
     for r, c in moved:
-        basket[r][c] += 1
         for dr, dc in ((-1, -1), (-1, 1), (1, -1), (1, 1)):
             nr = r + dr
             nc = c + dc
-            if nr < 0 or nr >= N or nc < 0 or nc >= N or basket[nr][nc] <= 0:
+            if nr < 0 or nr >= N or nc < 0 or nc >= N or basket[nr][nc] == 0:
                 continue
             basket[r][c] += 1
 
@@ -59,7 +58,9 @@ for _ in range(M):
     d, s = map(int, input().split())
     moved = set()
     move_clouds(d, s)
+    for r, c in moved:
+        basket[r][c] += 1
+    clouds = []
     add_water()
-    clouds.clear()
     generate_clouds()
 print(sum_water())
